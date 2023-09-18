@@ -6,7 +6,7 @@
 /*   By: datran <datran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:23:21 by datran            #+#    #+#             */
-/*   Updated: 2023/06/14 18:43:49 by datran           ###   ########.fr       */
+/*   Updated: 2023/09/17 12:13:54 by datran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int main(void) {
     while (true) {
         std::cout << "Select your command (ADD | SEARCH | EXIT): ";
         std::string command;
-        std::getline(std::cin, command);
+        if (!std::getline(std::cin, command) || std::cin.eof()) {
+            std::cerr << "Input error occurred." << std::endl;
+            return (1);
+        }
         if (command == "EXIT")
             break;
         else if (command == "ADD") {
@@ -26,7 +29,8 @@ int main(void) {
         } else if (command == "SEARCH") {
             phoneBook.searchContact();
         } else
-            std::cout << "Invalid command. Please enter correct command" << std::endl;
+            std::cout << "Invalid command. Please enter correct command"
+                      << std::endl;
     }
     return (0);
 }

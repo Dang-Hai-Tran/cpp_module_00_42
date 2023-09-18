@@ -6,7 +6,7 @@
 /*   By: datran <datran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:49:22 by datran            #+#    #+#             */
-/*   Updated: 2023/07/19 16:36:25 by datran           ###   ########.fr       */
+/*   Updated: 2023/09/17 17:33:32 by datran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,27 @@ int Account::getNbWithdrawals(void) {
 
 void Account::displayAccountsInfos(void) {
     Account::_displayTimestamp();
-    std::cout << "In GlobalBank, there are currently " << Account::_nbAccounts << " active accounts with a total amount of " << Account::_totalAmount << "$. A total of " << Account::_totalNbDeposits << " deposits and " << Account::_totalNbWithdrawals << " withdrawals were made" << std::endl;
+    std::cout << "accounts:" << Account::_nbAccounts << ";total:" << \
+    Account::_totalAmount << ";deposits:" << Account::_totalNbDeposits << \
+    ";withdrawals:" << Account::_totalNbWithdrawals  << std::endl;
+    
 }
 
 Account::Account(int initial_deposit) {
+    Account::_displayTimestamp();
     _accountIndex = Account::_nbAccounts;
     Account::_nbAccounts++;
-    makeDeposit(initial_deposit);
+    _amount += initial_deposit;
+    Account::_totalAmount += initial_deposit;
+    std::cout << "index:" << _accountIndex << ";amount:" << _amount << \
+    ";created" << std::endl;
 }
 
 void Account::makeDeposit(int deposit) {
     Account::_displayTimestamp();
-    if (_nbDeposits == 0)
-        std::cout << "Account[" << _accountIndex << "] made an initial deposit " << deposit << "$" << std::endl;
-    else
-        std::cout << "Account[" << _accountIndex << "] make a deposit " << deposit << "$" << std::endl;
+    std::cout << "index:" << _accountIndex << ";p_amount:" << _amount << \
+    ";deposit:" << deposit << ";amount:" << _amount + deposit << \
+    ";nb_deposits:" << _nbDeposits + 1 << std::endl;
     _amount += deposit;
     _nbDeposits++;
     Account::_totalAmount += deposit;
@@ -61,10 +67,13 @@ void Account::makeDeposit(int deposit) {
 bool Account::makeWithdrawal(int withdrawal) {
     Account::_displayTimestamp();
     if (withdrawal > _amount) {
-        std::cout << "Account[" << _accountIndex << "] dont have enough amount to withdrawn" << std::endl;
+        std::cout << "index:" << _accountIndex << ";p_amount:" << _amount << \
+        ";withdrawal:refused" << std::endl;
         return false;
     }
-    std::cout << "Account [" << _accountIndex << "] make a withdrawal " << withdrawal << "$" << std::endl;
+    std::cout << "index:" << _accountIndex << ";p_amount:" << _amount << \
+    ";withdrawal:" << withdrawal << ";amount:" << _amount - withdrawal << \
+    ";nb_withdrawals:" << _nbWithdrawals + 1 << std::endl;
     _amount -= withdrawal;
     _nbWithdrawals++;
     Account::_totalAmount -= withdrawal;
@@ -78,15 +87,20 @@ int Account::checkAmount(void) const {
 
 void Account::displayStatus(void) const {
     Account::_displayTimestamp();
-    std::cout << "Account[" << _accountIndex << "] currently has " << _amount << "$. It made " << _nbDeposits << " deposits and " << _nbWithdrawals << " withdrawals" << std::endl;
+    std::cout << "index:" << _accountIndex << ";amount:" << _amount << \
+    ";deposits:" << _nbDeposits << ";withdrawals:" << _nbWithdrawals << std::endl;
 }
 
 void Account::_displayTimestamp(void) {
     std::time_t currentTime = std::time(nullptr);
     std::tm *currentTm = std::localtime(&currentTime);
     char buffer[80];
-    std::strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", currentTm);
-    std::cout << "Date and time: " << buffer << std::endl;
+    std::strftime(buffer, 80, "%Y%m%d_%H%M%S", currentTm);
+    std::cout << "[" << buffer << "]" << " ";
 }
 
-Account::~Account(void){};
+Account::~Account(void){
+    Account::_displayTimestamp();
+    std::cout << "index:" << _accountIndex << ";amount:" <<_amount << ";closed" \
+    << std::endl;
+};

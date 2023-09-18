@@ -2,7 +2,7 @@ NAME = megaphone
 C++ = c++
 FLAGS = -std=c++98 -Wall -Wextra -Werror -g
 
-SRCS = megaphone.cpp
+SRCS = $(shell find ./ -type f -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
 
 RM = rm -rf

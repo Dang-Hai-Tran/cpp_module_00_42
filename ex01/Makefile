@@ -1,8 +1,8 @@
 NAME = phonebook
 C++ = c++
-FLAGS = -std=c++11 -Wall -Wextra -Werror -g
+FLAGS = -std=c++98 -Wall -Wextra -Werror -g
 
-SRCS = main.cpp PhoneBook.cpp Contact.cpp
+SRCS = $(shell find ./ -type f -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
 
 RM = rm -rf
