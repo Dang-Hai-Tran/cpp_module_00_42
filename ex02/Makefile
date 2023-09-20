@@ -8,6 +8,9 @@ OBJS = $(SRCS:.cpp=.o)
 RM = rm -rf
 
 all : $(NAME)
+test : all
+	@printf "Run test...\n"
+	@./cp.sh
 
 %.o : %.c
 	$(C++) $(FLAGS) -c $< -o $@
@@ -20,6 +23,7 @@ clean :
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) user.log test.log cp.log
 
 re : fclean all
 
